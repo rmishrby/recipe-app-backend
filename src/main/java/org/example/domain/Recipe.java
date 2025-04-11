@@ -1,9 +1,12 @@
 package org.example.domain;
 
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.List;
 
+@Entity
+@Table(name = "recipes") // Optional: Name for the database table
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -11,20 +14,34 @@ import java.util.List;
 @EqualsAndHashCode
 @ToString
 public class Recipe {
-    private int id;
+
+    @Id
+    private Integer id;
+
     private String name;
+
+    @ElementCollection
     private List<String> ingredients;
+
+    @ElementCollection
     private List<String> instructions;
-    private int prepTimeMinutes;
-    private int cookTimeMinutes;
-    private int servings;
+
+    private Integer prepTimeMinutes;
+    private Integer cookTimeMinutes;
+    private Integer servings;
     private String difficulty;
     private String cuisine;
-    private int caloriesPerServing;
+    private Integer caloriesPerServing;
+
+    @ElementCollection
     private List<String> tags;
-    private int userId;
+
+    private Integer userId;
     private String image;
     private double rating;
-    private int reviewCount;
+    private Integer reviewCount;
+
+    @ElementCollection
     private List<String> mealType;
 }
+
