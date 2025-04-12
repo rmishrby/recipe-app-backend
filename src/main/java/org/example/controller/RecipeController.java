@@ -2,6 +2,7 @@ package org.example.controller;
 
 import org.example.domain.Recipe;
 import org.example.domain.SearchResponse;
+import org.example.dto.RecipeDto;
 import org.example.service.RecipeSearchService;
 import org.example.service.RecipeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +22,8 @@ public class RecipeController {
     private RecipeSearchService recipeSearchService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<Recipe> getRecipeById(@PathVariable Integer id) {
-        Recipe recipe = recipeService.findRecipeById(id);
+    public ResponseEntity<RecipeDto> getRecipeById(@PathVariable Integer id) {
+        RecipeDto recipe = recipeService.findRecipeById(id);
         if (recipe != null) {
             return ResponseEntity.ok(recipe);
         } else {
