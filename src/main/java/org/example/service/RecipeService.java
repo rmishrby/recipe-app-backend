@@ -3,6 +3,7 @@ package org.example.service;
 
 import org.example.domain.Recipe;
 import org.example.dto.RecipeDto;
+import org.example.exception.RecipeNotFound;
 import org.example.repository.RecipeRepository;
 import org.example.util.RecipeMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,6 @@ public class RecipeService {
 
     public RecipeDto findRecipeById(Integer id) {
         Optional<Recipe> recipe = recipeRepository.findById(id);
-        return recipe.map(RecipeMapper::toDTO).orElse(null);
+        return recipe.map(RecipeMapper::toDTO).orElseThrow(() -> new RecipeNotFound(id));
     }
 }
