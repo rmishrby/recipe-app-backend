@@ -1,6 +1,7 @@
 package org.example.service;
 
 import org.example.domain.Recipe;
+import org.example.domain.SearchResponse;
 import org.hibernate.search.mapper.orm.Search;
 import org.hibernate.search.mapper.orm.session.SearchSession;
 import org.springframework.stereotype.Service;
@@ -17,15 +18,20 @@ public class RecipeSearchService {
     private EntityManager entityManager;
 
     @Transactional
-    public List<Recipe> searchRecipes(String keyword) {
+    public List<SearchResponse> searchRecipes(String keyword, int pageNumber, int pageSize) {
         SearchSession searchSession = Search.session(entityManager);
+
+        int offset = (pageNumber - 1) * pageSize;
 
         return searchSession.search(Recipe.class)
                 .where(f -> f.bool(b -> {
-                    b.should(f.match().fields("name").matching(keyword));
-                    b.should(f.match().fields("cuisine").matching(keyword));
+                    b.should(f.wildcard().fields("name").matching("*" + keyword + "*"));
+                    b.should(f.wildcard().fields("cuisine").matching("*" + keyword + "*"));
                 }))
-                .fetchHits(20); // limit to top 20 results
+                .fetchHits(offset, pageSize)
+                .stream()
+                .map(recipe -> new SearchResponse(recipe.getId(), recipe.getName(), recipe.getCuisine()))
+                .toList();
     }
 }
 

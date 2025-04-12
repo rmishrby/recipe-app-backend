@@ -1,6 +1,7 @@
 package org.example.controller;
 
 import org.example.domain.Recipe;
+import org.example.domain.SearchResponse;
 import org.example.service.RecipeSearchService;
 import org.example.service.RecipeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +31,8 @@ public class RecipeController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<Recipe>> searchRecipes(@RequestParam String query) {
-        List<Recipe> recipes = recipeSearchService.searchRecipes(query);
+    public ResponseEntity<List<SearchResponse>> searchRecipes(@RequestParam String query, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int size) {
+        List<SearchResponse> recipes = recipeSearchService.searchRecipes(query, page, size);
         return ResponseEntity.ok(recipes);
     }
 }
