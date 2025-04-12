@@ -1,6 +1,6 @@
 package org.example.service;
 
-import jakarta.annotation.PostConstruct;
+import javax.annotation.PostConstruct;
 import org.example.domain.Recipe;
 import org.example.domain.RecipeResponse;
 import org.example.repository.RecipeRepository;
@@ -21,7 +21,7 @@ public class LoadRecipeService {
 
     @PostConstruct
     public void fetchAndSaveRecipes() {
-        String url = "https://dummyjson.com/recipes";
+        String url = "https://dummyjson.com/recipes?limit=0&skip=0";
         RecipeResponse response = restTemplate.getForObject(url, RecipeResponse.class);
         if (response != null && response.getRecipes() != null) {
             List<Recipe> recipes = response.getRecipes();
